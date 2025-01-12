@@ -15,6 +15,7 @@ on:
       - 'README.md'  # README 파일
       - 'docs/**'  # docs 폴더 내 모든 파일
       - 'icons/**'  # icons 폴더 내 모든 파일
+      - 'docker_mysql/**'  # docker_mysql 폴더 내 모든 파일
       - 'images/**'  # images 폴더 내 모든 파일
       - '**.png'  # 모든 PNG 파일
       - '**.jpg'  # 모든 JPG 파일
@@ -30,6 +31,7 @@ on:
       - 'docs/**'
       - 'icons/**'
       - 'images/**'
+      - 'docker_mysql/**'
       - '**.png'
       - '**.jpg'
       - '**.jpeg'
