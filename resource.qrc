@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>icon/icons8-download-48.png</file>
+    <file>icon/reset.png</file>
+    <file>icon/icons8-reset-30.png</file>
+    <file>icon/cloud-sql3-14659761.png</file>
+    <file>icon/icons8-export-32.png</file>
+    <file>icon/import.png</file>
+    <file>icon/delete-2550213.png</file>
+    <file>icon/edit-button-84380.png</file>
+    <file>icon/floppy-disk-439894.png</file>
+    <file>icon/folder-3767084.png</file>
+    <file>icon/magnifying-glass-4426017.png</file>
+    <file>icon/network-connection-9261035.png</file>
+    <file>icon/plus-button-4885419.png</file>
+  </qresource>
+</RCC>

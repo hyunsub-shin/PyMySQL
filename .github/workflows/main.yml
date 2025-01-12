@@ -1,0 +1,90 @@
+# 워크플로우 이름 정의
+name: Python package
+
+# 워크플로우 실행 조건 설정
+on:
+  push:
+    branches: [ "main" ]  # main 브랜치에 push 될 때 실행
+    # 태그가 생성될 때도 워크플로우 실행
+    tags:
+      - 'v*'  # v로 시작하는 모든 태그 (예: v1.0.0)
+    paths-ignore:  # 다음 파일/폴더 변경 시 실행하지 않음
+      - '**.md'  # 모든 마크다운 파일
+      - '.gitignore'  # git 무시 파일
+      - 'LICENSE'  # 라이선스 파일
+      - 'README.md'  # README 파일
+      - 'docs/**'  # docs 폴더 내 모든 파일
+      - 'icons/**'  # icons 폴더 내 모든 파일
+      - 'images/**'  # images 폴더 내 모든 파일
+      - '**.png'  # 모든 PNG 파일
+      - '**.jpg'  # 모든 JPG 파일
+      - '**.jpeg'  # 모든 JPEG 파일
+      - '**.gif'  # 모든 GIF 파일
+  pull_request:
+    branches: [ "main" ]  # main 브랜치로의 PR에서 실행
+    paths-ignore:  # push와 동일한 제외 규칙 적용
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+      - 'docs/**'
+      - 'icons/**'
+      - 'images/**'
+      - '**.png'
+      - '**.jpg'
+      - '**.jpeg'
+      - '**.gif'
+
+# 작업 정의
+jobs:
+  build:
+    runs-on: ubuntu-22.04  # Ubuntu 22.04 LTS 환경에서 실행
+    
+    # 동시 실행 제어
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}  # 워크플로우 그룹 정의
+      cancel-in-progress: true  # 진행 중인 워크플로우 취소
+      
+    # Python 버전 전략 설정
+    strategy:
+      matrix:
+        python-version: ["3.9.12"]  # Python 3.9.12 버전 사용
+
+    # 실행 단계 정의
+    steps:
+    # 코드 체크아웃
+    - uses: actions/checkout@v2
+    
+    # Python 설정
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    # 의존성 설치
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        # GUI 관련 패키지 설치
+        sudo apt-get install -y xvfb libxcb-xinerama0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xfixes0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-shape0 libxcb-shm0 libx11-xcb1
+        python -m pip install --upgrade pip
+        pip install pandas numpy PyQt5
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+    # 파일 구조 확인
+    - name: Check file structure
+      run: |
+        pwd
+        ls -la
+        
+    # Python 스크립트 실행
+    - name: Run Python
+      env:
+        CI: true  # CI 환경 변수 설정
+      run: |
+        export QT_DEBUG_PLUGINS=1  # Qt 디버그 활성화
+        export DISPLAY=:99  # 가상 디스플레이 설정
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &  # 가상 디스플레이 서버 실행
+        sleep 3  # 서버 시작 대기
+        timeout 10s python3 UDI_qrcode_gen_r01.py || true  # 10초 후 자동 종료
+
