@@ -88,6 +88,6 @@ jobs:
         export DISPLAY=:99  # 가상 디스플레이 설정
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &  # 가상 디스플레이 서버 실행
         sleep 3  # 서버 시작 대기
-        if [ ! -f txt2qrcode.py ]; then echo "Error: txt2qrcode.py not found!" && exit 1; fi  # 파일 존재 여부 확인
+        if [ ! -f MySQL_Database.py ]; then echo "Error: MySQL_Database.py not found!" && exit 1; fi  # 파일 존재 여부 확인
         timeout 10s python3 MySQL_Database.py  # 10초 후 자동 종료
 
