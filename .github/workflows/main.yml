@@ -88,5 +88,5 @@ jobs:
         export DISPLAY=:99  # 가상 디스플레이 설정
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &  # 가상 디스플레이 서버 실행
         sleep 3  # 서버 시작 대기
-        timeout 10s python3 UDI_qrcode_gen_r01.py || true  # 10초 후 자동 종료
+        timeout 10s python3 MySQL_Database.py || true  # 10초 후 자동 종료
 
